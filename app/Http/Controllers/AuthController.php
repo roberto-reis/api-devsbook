@@ -43,6 +43,19 @@ class AuthController extends Controller
         return $array['error'] = 'Dados não Enviados.';
     }
 
+    public function logout() {
+        Auth::logout();
+        return ['error'=>''];
+    }
+
+    public function refresh() {
+        $token = Auth::refresh();
+        return [
+            'error' => '',
+            'token' => $token
+        ];
+    }
+
     public function create(Request $request) {
         $array = ['error'=> ''];
 
