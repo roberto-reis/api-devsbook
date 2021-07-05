@@ -10,7 +10,37 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth::api', ['except' => ['login', 'create', 'unauthorized'] ]);
+        $this->middleware('auth:api', [
+            'except' => ['login', 'create', 'unauthorized'] 
+        ]);
+    }
+
+    public function unauthorized() {
+        return response()->json(['error'=>'Não autorizado'], 401);
+    }
+
+    public function login(Request $request) {
+        $array = ['error'=>''];
+
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        if($email && $password) {
+            $token = Auth::attempt([
+                'email' => $email,
+                'password' => $password
+            ]);
+    
+            if(!$token) {
+                return $array['error'] = 'E-mail e/ou senha não conferem!';
+            }
+    
+            $array['token'] = $token;
+    
+            return $array;
+        }
+
+        return $array['error'] = 'Dados não Enviados.';
     }
 
     public function create(Request $request) {
