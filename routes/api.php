@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +27,9 @@ Route::post('/auth/logout', [AuthController::class, 'logout']);
 Route::post('/auth/refresh', [AuthController::class, 'refresh']);
 
 Route::post('/user', [AuthController::class, 'create']);
-// Route::post('/user', [UserController::class, 'update']);
-// Route::post('/user/avatar', [UserController::class, 'updateAvatar']);
+Route::put('/user', [UserController::class, 'update']);
+
+Route::post('/user/avatar', [UserController::class, 'updateAvatar']);
 // Route::post('/user/cover', [UserController::class, 'updateCover']);
 
 // Route::get('/feed', [FeedController::class, 'read']);
