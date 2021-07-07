@@ -28,7 +28,7 @@ class CreateAllTables extends Migration
 
         Schema::create('userrelations', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_trom');
+            $table->integer('user_from');
             $table->integer('user_to');
         });
 
