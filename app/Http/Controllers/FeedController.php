@@ -93,7 +93,7 @@ class FeedController extends Controller
         }
         $users[] = Auth::user()->id;
 
-        // Pegar os post dessa galera ORDENADO PELA DATA
+        // Pegar os post ORDENADO PELA DATA
         $postList = Post::whereIn('id_user', $users)
         ->orderBy('created_at', 'desc')
         ->offset($page * $perPage)
@@ -104,12 +104,41 @@ class FeedController extends Controller
         $pageCount = ceil($total / $perPage);
 
         // Preencher as informações adicionais
-        $post = $this->_postListToObject($postList, Auth::user()->id);
-        $array['posts'] = $post;
+        $posts = $this->_postListToObject($postList, Auth::user()->id);
+        $array['posts'] = $posts;
         $array['pageCount'] = $pageCount;
         $array['currentPage'] = $page;
 
 
+
+        return $array;
+    }
+
+    public function userFeed(Request $request, $id = false) {
+        $array = ['error'=>''];
+
+        if($id == false) {
+            $id = Auth::user()->id;
+        }
+
+        $page = intval( $request->input('page') );
+        $perPage = 2;
+
+        // Pegar os posts do usuário ordenado pela dta
+        $postList = Post::where('id_user', $id)
+        ->orderBy('created_at', 'desc')
+        ->offset($page * $perPage)
+        ->limit($perPage)
+        ->get();
+
+        $total = Post::where('id_user', $id)->count();
+        $pageCount = ceil($total / $perPage);
+
+        // Preencher as informações adicionais
+        $posts = $this->_postListToObject($postList, Auth::user()->id);
+        $array['posts'] = $posts;
+        $array['pageCount'] = $pageCount;
+        $array['currentPage'] = $page;
 
         return $array;
     }
