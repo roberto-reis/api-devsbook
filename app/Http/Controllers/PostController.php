@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\PostComment;
 use App\Models\PostLike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class PostController extends Controller
 {
@@ -46,6 +48,36 @@ class PostController extends Controller
 
             $likeCount = PostLike::where('id_post', $id)->count();            
             $array['likeCount'] = $likeCount;
+
+        } else {
+            $array['error'] = ['Post não existe.'];
+            return $array;
+        }
+
+
+        return $array;
+    }
+
+    public function comment(Request $request, $id) {
+        $array = ['error' => ''];
+
+        $txt = $request->input('txt');
+
+        $postExists = Post::find($id);
+        if($postExists) {
+
+            if($txt) {
+                $newComment = new PostComment();
+                $newComment->id_post = $id;
+                $newComment->id_user = Auth::user()->id;
+                $newComment->created_at = date('Y-m-d H:i:s');
+                $newComment->body = $txt;
+                $newComment->save();
+
+            }else {
+                $array['error'] = ['Não enviou mensagem.'];
+            return $array;
+            }
 
         } else {
             $array['error'] = ['Post não existe.'];
