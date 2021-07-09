@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,10 @@ Route::get('/feed', [FeedController::class, 'read']);
 Route::get('user/feed', [FeedController::class, 'userFeed']);
 Route::get('/user/{id}/feed', [FeedController::class, 'userFeed']);
 
+// Route::post('/user/{id}/follow', [UserController::class, 'follow']);
+// Route::get('/user/{id}/followrs', [UserController::class, 'followrs']);
+// Route::get('/user/{id}/photos', [UserController::class, 'photos']);
+
 Route::get('/user', [UserController::class, 'read']);
 Route::get('/user/{id}', [UserController::class, 'read']);
 
@@ -46,4 +51,4 @@ Route::post('/feed', [FeedController::class, 'create']);
 Route::post('/post/{id}/like', [PostController::class, 'like']);
 Route::post('/post/{id}/comment', [PostController::class, 'comment']);
 
-// Route::get('/search', [SearchController::class, 'search']);
+Route::get('/search', [SearchController::class, 'search']);
